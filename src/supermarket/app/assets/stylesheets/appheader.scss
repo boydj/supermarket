@@ -128,7 +128,7 @@
     }
   }
 
-  @media #{$small-down} {
+  @media #{$medium-down} {
     ul.mainnav li {
       display: none;
     }
