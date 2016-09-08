@@ -3,7 +3,7 @@ Paperclip.interpolates(:compatible_id) do |attachment, _style|
 end
 
 ':class/:attachment/:compatible_id/:style/:basename.:extension'.tap do |path|
-  configured = %w(S3_BUCKET S3_ACCESS_KEY_ID S3_SECRET_ACCESS_KEY).all? do |key|
+  configured = %w(S3_BUCKET S3_ACCESS_KEY_ID S3_SECRET_ACCESS_KEY S3_REGION).all? do |key|
     ENV[key].present?
   end
 
@@ -21,7 +21,8 @@ end
       },
       path: path,
       bucket: ENV['S3_BUCKET'],
-      s3_protocol: ENV['PROTOCOL']
+      s3_protocol: ENV['PROTOCOL'],
+      s3_region: ENV['S3_REGION']
     }
 
     if ENV['S3_PRIVATE_OBJECTS'].present?
