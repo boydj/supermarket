@@ -39,6 +39,21 @@ end
 
 Capybara.javascript_driver = :quiet_ghost
 
+if ENV['CAPYBARA_SCREENSHOT_TO_S3'] == 'true'
+  if ENV['SCREENIE_AWS_ID'].present? && ENV['SCREENIE_AWS_SECRET'].present?
+    Capybara::Screenshot.s3_configuration = {
+      s3_client_credentials: {
+        access_key_id: ENV['SCREENIE_AWS_ID'],
+        secret_access_key: ENV['SCREENIE_AWS_SECRET'],
+        region: "us-east-1"
+      },
+      bucket_name: "supermarket-test-screenshots"
+    }
+  else
+    puts "WARN: asked to save screenshots to S3, but SCREENIE_AWS_ID and SCREENIE_AWS_SECRET are not set. Saving screenshots to local filesystem."
+  end
+end
+
 RSpec.configure do |config|
   # Include FactoryGirl mixin for syntax
   config.include FactoryGirl::Syntax::Methods
